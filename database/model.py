@@ -72,10 +72,12 @@ class BlockedActor(Base):
 
     def __repr__(self):
         return f"<BlockedActor {self.uri}>"
-    
-try:
-    Base.metadata.create_all(bind=engine)
-except:
+
+
+def genTabs():
+    try:
+        Base.metadata.create_all(bind=engine)
+    except:
         print("Error al crear las tablas")
         raise
 
