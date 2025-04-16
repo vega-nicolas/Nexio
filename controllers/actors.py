@@ -10,3 +10,9 @@ def addInternalActor(email : str, preferred_username: str) -> bool:
         return True
     else:
         return False
+    
+def addExternalActor(uri: str, preferred_username: str, inbox: str, outbox: str, publicKey: str) -> bool:
+    if actors.addExternalActor(uri, preferred_username, inbox, outbox, publicKey):
+        return True
+    else:
+        return False
