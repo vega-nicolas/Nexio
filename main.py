@@ -13,5 +13,5 @@ templates = Jinja2Templates(directory="views")
 async def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-app.include_router(users.app)
 model.genTabs()
+app.include_router(users.app)

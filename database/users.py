@@ -5,7 +5,7 @@ conn = connection.conn
 cur = connection.conn.cursor()
 
 def addUser(email: str, password: str) -> bool:
-    sql = "insert into users (email, password_hash, created_at, enabled) values (%s, %s, now(), 1);"
+    sql = "insert into users (email, password_hash, created_at, enabled, admin) values (%s, %s, now(), 1, 0);"
     if cur.execute(sql, (email, security.hashPassword(password))):
         conn.commit()
         return True

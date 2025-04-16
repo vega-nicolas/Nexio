@@ -7,7 +7,7 @@ app = APIRouter()
 @app.post("/api/adduser/")
 async def addUser(user: User):
     if users.addUser(user.email, user.username, user.password):
-        actors.addInternalActor(user.email, user.username)
+        actors.addInternalActor(user.email, user.username, user.displayName)
         return {"Registre":"Valid"}
     else:
         return {"registre":"Error"}

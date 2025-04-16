@@ -36,7 +36,7 @@ class Actor(Base):
     uri = Column(String(255), unique=True, nullable=False, index=True)
     preferred_username = Column(String(30), nullable=False, index=True)
     display_name = Column(String(30), nullable=False)
-    remote_node = Column(String(255), nullable=False, index=True)
+    remote_node = Column(String(255), nullable=True, index=True)
     inbox = Column(String(255), nullable=False)
     outbox = Column(String(255), nullable=False)
     public_key = Column(String(2048), nullable=False)
