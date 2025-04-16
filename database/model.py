@@ -1,15 +1,15 @@
-from sqlalchemy import create_engine, Column, BigInteger, String, Text, Boolean, DateTime, ForeignKey
+from sqlalchemy import create_engine, Column, BigInteger, String, Boolean, DateTime, ForeignKey, Index
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.exc import SQLAlchemyError
 from datetime import datetime
 import os
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 DATABASE_URL = (
-    f"mysql+pymysql://{os.getenv("DB_USER")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_HOST")}/{os.getenv("DB_NAME")}"
+    f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
 )
 
 engine = create_engine(DATABASE_URL)
@@ -19,10 +19,11 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
     id = Column(BigInteger, primary_key=True, index=True)
-    email = Column(String(255), unique=True, nullable=False)
-    password_hash = Column(String(255), nullable=False)
+    email = Column(String(255), unique=True, nullable=False, index=True)
+    password_hash = Column(String(60), nullable=False)
     created_at = Column(DateTime, default=datetime.now)
     enabled = Column(Boolean, nullable=False, default=True) #Si el usuario de da de baja, se cambia el valor a False (0)
+    admin = Column(Boolean, nullable=False, default=False)
     actor = relationship("Actor", back_populates="user", uselist=False)
 
     def __repr__(self):
@@ -32,16 +33,22 @@ class Actor(Base):
     __tablename__ = "actors"
     id = Column(BigInteger, primary_key=True, index=True)
     user_id = Column(BigInteger, ForeignKey("users.id"), unique=True, nullable=True)
-    uri = Column(String(255), unique=True, nullable=False)
-    preferred_username = Column(String(50), nullable=False)
+    uri = Column(String(255), unique=True, nullable=False, index=True)
+    preferred_username = Column(String(30), nullable=False, index=True)
+    display_name = Column(String(30), nullable=False)
+    remote_node = Column(String(255), nullable=False, index=True)
     inbox = Column(String(255), nullable=False)
     outbox = Column(String(255), nullable=False)
-    public_key = Column(Text, nullable=False)
-    private_key = Column(Text, nullable=True)
+    public_key = Column(String(2048), nullable=False)
+    private_key = Column(String(2048), nullable=True)
     is_local = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime, default=datetime.now)
     user = relationship("User", back_populates="actor")
     activities = relationship("Activity", back_populates="actor")
+
+    __table_args__ = (
+        Index('ix_actors_uri_preferred_username', 'uri', 'preferred_username'),
+    )
 
     def __repr__(self):
         return f"<Actor {self.uri}>"
@@ -49,16 +56,13 @@ class Actor(Base):
 class Activity(Base):
     __tablename__ = "activities"
     id = Column(BigInteger, primary_key=True, index=True)
-    actor_id = Column(BigInteger, ForeignKey("actors.id"), nullable=False)
-    type = Column(String(50), nullable=False)
-    object_type = Column(String(50))
-    object_url = Column(String(255))
-    content = Column(Text)
-    actor_uri = Column(String(255))
+    actor_id = Column(BigInteger, ForeignKey("actors.id"), nullable=False, index=True)
+    type = Column(String(30), nullable=False)
+    object_type = Column(String(30), nullable=True)
+    object_url = Column(String(255), nullable=True)
+    content = Column(String(500), nullable=True)
     created_at = Column(DateTime, default=datetime.now)
-
     actor = relationship("Actor", back_populates="activities")
-
 
     def __repr__(self):
         return f"<Activity {self.type}>"
@@ -66,19 +70,19 @@ class Activity(Base):
 class BlockedActor(Base):
     __tablename__ = "blocked_actors"
     id = Column(BigInteger, primary_key=True, index=True)
-    uri = Column(String(255), unique=True, nullable=False)
-    reason = Column(Text)
+    uri = Column(String(255), unique=True, nullable=False, index=True)
+    reason = Column(String(100), nullable=True)
     created_at = Column(DateTime, default=datetime.now)
 
     def __repr__(self):
         return f"<BlockedActor {self.uri}>"
 
-
 def genTabs():
     try:
         Base.metadata.create_all(bind=engine)
-    except:
-        print("Error al crear las tablas")
+        print("Tablas creadas exitosamente")
+    except SQLAlchemyError as e:
+        print(f"Error al crear las tablas: {str(e)}")
         raise
 
 def get_db():
