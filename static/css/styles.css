@@ -1,7 +1,50 @@
-html{
-    background-color: #232323;
+/* Transiciones suaves para cambios de tema */
+html,
+body,
+input,
+button {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-p, a, h1, h2, h3{
-    color: #ffffff;
+/* Estilo para mensajes de respuesta */
+#responseMessage.success {
+    background-color: #d1fae5;
+    border: 1px solid #10b981;
+    color: #065f46;
+    padding: 1rem;
+    border-radius: 0.375rem;
+}
+
+#responseMessage.error {
+    background-color: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 0.375rem;
+}
+
+/* Modo oscuro para mensajes */
+@media (prefers-color-scheme: dark) {
+    #responseMessage.success {
+        background-color: #064e3b;
+        border-color: #047857;
+        color: #d1fae5;
+    }
+
+    #responseMessage.error {
+        background-color: #7f1d1d;
+        border-color: #b91c1c;
+        color: #fecaca;
+    }
+}
+
+/* Hover en inputs */
+input:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+    input:focus {
+        box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.3);
+    }
 }

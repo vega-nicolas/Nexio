@@ -11,8 +11,8 @@ def addUser(email: str, username: str, password: str) -> bool:
         else:
             return False
 
-def validUser(username: str, password: str) -> bool:
-    if users.validUser(username, password) == True:
+def validUser(email: str, password: str) -> bool:
+    if users.validUser(email, password) == True:
         return True
     else:
         return False

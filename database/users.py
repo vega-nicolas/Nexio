@@ -13,13 +13,13 @@ def addUser(email: str, password: str) -> bool:
         conn.rollback()
         return False
     
-def validUser(user: str, password: str) -> bool:
+def validUser(email: str, password: str) -> bool:
     sql = "select password_hash from users where email = %s;"
-    if cur.execute(sql, (user)):
+    if cur.execute(sql, (email)):
         hash = cur.fetchone()[0]
         if security.checkPassword(password, hash) == True:
             sql2 = "select * from users where email = %s and password_hash = %s and enabled = 1;"
-            if cur.execute(sql2, (user, hash)):
+            if cur.execute(sql2, (email, hash)):
                 return True
     else:
         return False

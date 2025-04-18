@@ -1,5 +1,8 @@
 /* Transiciones suaves para cambios de tema */
-html, body, input, button {
+html,
+body,
+input,
+button {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 

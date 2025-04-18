@@ -18,5 +18,10 @@ async def root(request: Request):
 async def get_register(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
+@app.get("/login", response_class=HTMLResponse)
+async def get_register(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+
 model.genTabs()
 app.include_router(users.app)

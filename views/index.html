@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexio</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
 </head>
-<body>
-    <h1>Nexio</h1>
-    <p>La red social descentalizada</p>
-  <!--  <script src="{{ url_for('static', path='/js/home.js') }}"></script> -->
+
+<body data-theme="system"
+  class="bg-gray-100 dark:bg-gray-900 flex items-center justify-center min-h-screen transition-colors duration-300">
+  <script src="{{ url_for('static', path='/js/home.js') }}"></script>
 </body>
+
 </html>
