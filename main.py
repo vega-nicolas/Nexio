@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse
 from api import users
 
 
+model.genTabs()
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="views")
@@ -23,5 +24,4 @@ async def get_register(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
 
-model.genTabs()
 app.include_router(users.app)
