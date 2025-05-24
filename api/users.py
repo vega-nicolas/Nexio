@@ -1,11 +1,15 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Form
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import HTTPException
+from controllers import security
 from models.users import User
 from controllers import users, actors, security
+import secrets
 
 app = APIRouter()
-oauth2 = OAuth2PasswordBearer("/api/validuser/")
+oauth2 = OAuth2PasswordBearer("/api/login/")
+
 
 @app.post("/api/adduser/")
 async def addUser(user: User):
@@ -14,14 +18,34 @@ async def addUser(user: User):
         return JSONResponse(status_code=status.HTTP_201_CREATED, content={"Registre": "Valid"})
     return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"Registre": "Error"})
 
-@app.post("/api/validuser/")
+@app.post("/api/login/")
 async def login(form: OAuth2PasswordRequestForm = Depends()):
     if users.validUser(form.username, form.password):
+        token =  secrets.token_hex(32)
         return JSONResponse(
-            status_code=status.HTTP_202_ACCEPTED,
-            content={"access_token": security.randomToken(), "token_type": "bearer"}
+                content={"access_token": token, "token_type": "bearer"},
+                status_code=status.HTTP_200_OK
+                )
+    
+        '''token = security.randomToken()
+        if tokens.addToken(users.getIdByUsername(username), token):
+            return JSONResponse(
+                content={"access_token": token, "token_type": "bearer"},
+                status_code=status.HTTP_200_OK
+        )'''
+    else:
+        return JSONResponse(
+            content={"success": False, "message": "Usuario o contraseña incorrectos."},
+            status_code=status.HTTP_401_UNAUTHORIZED
         )
-    return JSONResponse(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        content={"access_token": None}
-    )
+    
+@app.get("/api/validtoken/")
+async def validtoken(token: str = Depends(oauth2)):
+    #if not tokens.validToken(token):
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token inválido",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return {"message": "Acceso autorizado", "token": token}

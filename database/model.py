@@ -21,7 +21,7 @@ class User(Base):
     __tablename__ = "users"
     id = Column(BigInteger, primary_key=True, index=True)
     email = Column(String(255), unique=True, nullable=False, index=True)
-    password_hash = Column(String(60), nullable=False)
+    password_hash = Column(String(200), nullable=False)# Ideal por si en un futuro se cambia el algoritmo hash
     created_at = Column(DateTime, default=datetime.now)
     enabled = Column(Boolean, nullable=False, default=True) #Si el usuario de da de baja, se cambia el valor a False (0)
     admin = Column(Boolean, nullable=False, default=False)
