@@ -16,3 +16,10 @@ def validUser(email: str, password: str) -> bool:
         return True
     else:
         return False
+    
+def get_id(username: str) -> int:
+    id = users.get_id(username)
+    if id > 0:
+        return id
+    else:
+        return None

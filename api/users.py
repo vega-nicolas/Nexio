@@ -1,11 +1,9 @@
-from fastapi import APIRouter, Depends, status, Form
+from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi import HTTPException
-from controllers import security
 from models.users import User
-from controllers import users, actors, security
-import secrets
+from controllers import users, actors, security, tokens
 
 app = APIRouter()
 oauth2 = OAuth2PasswordBearer("/api/login/")
@@ -21,18 +19,12 @@ async def addUser(user: User):
 @app.post("/api/login/")
 async def login(form: OAuth2PasswordRequestForm = Depends()):
     if users.validUser(form.username, form.password):
-        token =  secrets.token_hex(32)
-        return JSONResponse(
-                content={"access_token": token, "token_type": "bearer"},
-                status_code=status.HTTP_200_OK
-                )
-    
-        '''token = security.randomToken()
-        if tokens.addToken(users.getIdByUsername(username), token):
+        token = security.randomToken()
+        if tokens.addToken(users.get_id(form.username), token):
             return JSONResponse(
                 content={"access_token": token, "token_type": "bearer"},
                 status_code=status.HTTP_200_OK
-        )'''
+        )
     else:
         return JSONResponse(
             content={"success": False, "message": "Usuario o contraseña incorrectos."},
@@ -41,8 +33,7 @@ async def login(form: OAuth2PasswordRequestForm = Depends()):
     
 @app.get("/api/validtoken/")
 async def validtoken(token: str = Depends(oauth2)):
-    #if not tokens.validToken(token):
-    if not token:
+    if not tokens.validToken(token):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token inválido",

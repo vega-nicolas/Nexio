@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Manejar códigos de estado HTTP
             if (response.status === 201) {
                 showMessage('Registro exitoso. ¡Bienvenido a Nexio!', 'success');
-                alert('¡Registro exitoso! Bienvenido a Nexio');
                 form.reset();
+                window.location.href = '/';
             } else if (response.status === 409) {
                 showMessage(result.detail || 'El email o nombre de usuario ya está registrado.', 'error');
                 alert(`Error: ${result.detail || 'El email o nombre de usuario ya está registrado.'}`);

@@ -218,7 +218,12 @@ class ReadNotification(Base):
     message = relationship('PrivateMessage')
     actor = relationship('Actor')
 
-
+class Tokens(Base):
+    __tablename__ = "tokens"
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    user_id = Column(BigInteger, ForeignKey("users.id"), unique=False, nullable=False)
+    token_hash = Column(String(200), unique=True, nullable=False) # Ideal por si en un futuro se cambia el algoritmo hash
+    created_at = Column(DateTime, nullable=False, server_default=func.current_timestamp())
 
 def genTabs():
     try:

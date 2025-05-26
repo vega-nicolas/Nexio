@@ -9,8 +9,12 @@
   <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
 </head>
 
-<body data-theme="system"
-  class="bg-gray-100 dark:bg-gray-900 flex items-center justify-center min-h-screen transition-colors duration-300">
+<body data-theme="system" class="bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-300">
+  {% include 'topnav.html' %}
+  <div class="main-content">
+    <h1 class="text-3xl font-bold text-center mt-4">Bienvenido a Nexio</h1>
+    <p class="text-center mt-2">Este es el contenido de la página principal.</p>
+  </div>
   <script src="{{ url_for('static', path='/js/home.js') }}"></script>
 </body>
 

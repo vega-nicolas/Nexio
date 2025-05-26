@@ -38,7 +38,50 @@ button {
     }
 }
 
-/* Hover en inputs */
+/* Estilo de la barra de navegación */
+.navbar {
+    background-color: #333;
+    padding: 1rem;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    /* Asegura que la barra esté por encima de otros elementos */
+}
+
+/* Modo oscuro para la barra de navegación */
+@media (prefers-color-scheme: dark) {
+    .navbar {
+        background-color: #1f2937;
+        /* Color más oscuro para el tema oscuro */
+    }
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    /* Usa flexbox para alinear los elementos horizontalmente */
+    justify-content: flex-start;
+    /* Alinea los elementos a la izquierda */
+}
+
+.navbar li {
+    margin-right: 1.5rem;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+.navbar a:hover {
+    color: #ddd;
+}
+
 input:focus {
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
@@ -47,4 +90,10 @@ input:focus {
     input:focus {
         box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.3);
     }
+}
+
+/* Contenedor principal para el contenido */
+.main-content {
+    padding-top: 4rem;
+    /* Espacio para evitar que el contenido quede debajo de la barra */
 }
