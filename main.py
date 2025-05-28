@@ -3,7 +3,7 @@ from database import model
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
-from api import users
+from api import users, posts
 
 
 model.genTabs()
@@ -25,3 +25,4 @@ async def get_register(request: Request):
 
 
 app.include_router(users.app)
+app.include_router(posts.app)

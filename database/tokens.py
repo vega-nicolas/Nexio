@@ -20,3 +20,11 @@ def validToken(token: str) -> bool:
             return True
     else:
         return False
+    
+def getUserId(token: str) -> str:
+    sql = "select user_id from tokens where token_hash = %s;"
+    if cur.execute(sql, (security.hash_token(token))):
+        if cur.fetchone()[0]:
+            return True
+    else:
+        return False

@@ -25,3 +25,11 @@ def validToken(token: str) -> bool:
         return False
     else:
         return True
+    
+def userId(token: str) -> int:
+    if token == None:
+        return False
+    elif token == "":
+        return False
+    else:
+        return tokens.getUserId(token)

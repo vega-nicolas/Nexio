@@ -14,7 +14,8 @@ async def addUser(user: User):
     if users.addUser(user.email, user.username, user.password):
         actors.addInternalActor(user.email, user.username, user.displayName)
         return JSONResponse(status_code=status.HTTP_201_CREATED, content={"Registre": "Valid"})
-    return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"Registre": "Error"})
+    else:
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"Registre": "Error"})
 
 @app.post("/api/login/")
 async def login(form: OAuth2PasswordRequestForm = Depends()):
