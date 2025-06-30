@@ -1,25 +1,27 @@
 async function verificarToken() {
-    const token = sessionStorage.getItem("access_token");
+    const token = localStorage.getItem("access_token");
     
-    if (!token) {
-        window.location.href = "/login";
-        return;
-    }
+    if (token != null) {
 
-    try {
-        const response = await fetch("/api/protected/", {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + token
+        try {
+            const response = await fetch("/api/validtoken/", {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+    
+            if (response.ok) {
+                // Valid Token
+                document.getElementById('login').remove();
+                document.getElementById('register').remove();
             }
-        });
-
-        if (!response.ok) {
-            window.location.href = "/login";
+    
+        } catch (error) {
+            console.error("Error verificando el token:", error);
+            
         }
-
-    } catch (error) {
-        console.error("Error verificando el token:", error);
-        window.location.href = "/login";
     }
+
 }
+document.addEventListener("DOMContentLoaded", verificarToken);
