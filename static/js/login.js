@@ -29,8 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Manejar códigos de estado HTTP
             if (response.status === 202) {
-                showMessage('Login exitoso', 'success');
-                alert('Login exitoso! Bienvenido a Nexio');
+                localStorage.setItem('access_token', result.access_token);
                 form.reset();
                 window.location.href = '/';
             } else if (response.status === 401) {
@@ -57,3 +56,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000);
     }
 });
+async function validToken() {
+    const token = sessionStorage.getItem("access_token");
+    
+    if (!token) {
+        return false;
+    }
+    try {
+        const response = await fetch("/api/validtoken/", {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
+        if (response.ok) {
+            return true;
+        }
+        else{
+                return false;
+            }
+
+    } catch (error) {
+        console.error("Error verificando el token:", error);
+        return false;
+    }
+}

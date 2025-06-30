@@ -24,7 +24,7 @@ async def login(form: OAuth2PasswordRequestForm = Depends()):
         if tokens.addToken(users.get_id(form.username), token):
             return JSONResponse(
                 content={"access_token": token, "token_type": "bearer"},
-                status_code=status.HTTP_200_OK
+                status_code=status.HTTP_202_ACCEPTED
         )
     else:
         return JSONResponse(
@@ -40,4 +40,7 @@ async def validtoken(token: str = Depends(oauth2)):
             detail="Token inválido",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    return {"message": "Acceso autorizado", "token": token}
+    return JSONResponse(
+                content={"message": "Acceso autorizado", "token": token},
+                status_code=status.HTTP_200_OK
+        )

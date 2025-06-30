@@ -1,5 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Manejo del formulario
+document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('registerForm').addEventListener('submit', async (event) => {
         event.preventDefault();
         const form = event.target;
@@ -22,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (document.querySelector('input[name="password"]').value != document.querySelector('input[name="confirmPassword"]').value){
-            showMessage('Las contraseñas deben ser identicas', 'error');
-            alert("Las contraseñas deben ser identicas")
+        if (document.querySelector('input[name="password"]').value !== document.querySelector('input[name="confirmPassword"]').value){
+            showMessage('Las contraseñas deben ser idénticas', 'error');
+            alert("Las contraseñas deben ser idénticas");
             return;
         }
 
@@ -41,9 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Manejar códigos de estado HTTP
             if (response.status === 201) {
-                showMessage('Registro exitoso. ¡Bienvenido a Nexio!', 'success');
                 form.reset();
-                window.location.href = '/';
+                window.location.href = '/login';
             } else if (response.status === 409) {
                 showMessage(result.detail || 'El email o nombre de usuario ya está registrado.', 'error');
                 alert(`Error: ${result.detail || 'El email o nombre de usuario ya está registrado.'}`);
