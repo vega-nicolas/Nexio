@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             alert('Error: El nombre de usuario no puede exceder 30 caracteres');
             return;
         }
-        if (data.password.length < 8) {
+        if (data.password.length < 12) {
             showMessage('La contraseña debe tener al menos 8 caracteres', 'error');
             alert('Error: La contraseña debe tener al menos 8 caracteres');
             return;
