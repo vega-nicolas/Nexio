@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Manejo del formulario
-    document.getElementById('registerForm').addEventListener('submit', async (event) => {
+    document.getElementById('loginForm').addEventListener('submit', async (event) => {
         event.preventDefault();
         const form = event.target;
         const formData = new FormData(form);
@@ -8,11 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
         data.append('username', formData.get('email'));
         data.append('password', formData.get('password'));
 
-        // Validaciones
-
         if (formData.get('password').length < 8) {
-            showMessage('La contraseña debe tener al menos 8 caracteres', 'error');
-            alert('Error: La contraseña debe tener al menos 8 caracteres');
+            showMessage('Password must be at least 8 characters long', 'error');
+            alert('Error: Password must be at least 8 characters');
             return;
         }
 
@@ -27,21 +24,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
 
-            // Manejar códigos de estado HTTP
             if (response.status === 202) {
                 localStorage.setItem('access_token', result.access_token);
                 form.reset();
                 window.location.href = '/';
             } else if (response.status === 401) {
-                showMessage(result.detail || 'Credenciales inválidas.', 'error');
-                alert(`Error: ${result.detail || 'Credenciales inválidas.'}`);
+                showMessage(result.detail || 'Invalid credentials.', 'error');
+                alert(`Error: ${result.detail || 'Invalid credentials.'}`);
             } else {
-                showMessage(result.detail || 'Error al iniciar sesión. Intenta de nuevo.', 'error');
-                alert(`Error: ${result.detail || 'Error al iniciar sesión. Intenta de nuevo.'}`);
+                showMessage(result.detail || 'Login failed. Please try again.', 'error');
+                alert(`Error: ${result.detail || 'Login failed. Please try again.'}`);
             }
         } catch (error) {
-            showMessage('Error de conexión. Verifica tu red e intenta de nuevo.', 'error');
-            alert('Error de conexión: Verifica tu red e intenta de nuevo.');
+            showMessage('Connection error. Please check your network and try again.', 'error');
+            alert('Connection error: Please check your network and try again.');
             console.error('Error:', error);
         }
     });
@@ -56,12 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000);
     }
 });
-async function validToken() {
+
+async function isTokenValid() {
     const token = sessionStorage.getItem("access_token");
-    
-    if (!token) {
-        return false;
-    }
+    if (!token) return false;
     try {
         const response = await fetch("/api/validtoken/", {
             method: "GET",
@@ -69,15 +63,9 @@ async function validToken() {
                 "Authorization": "Bearer " + token
             }
         });
-        if (response.ok) {
-            return true;
-        }
-        else{
-                return false;
-            }
-
+        return response.ok;
     } catch (error) {
-        console.error("Error verificando el token:", error);
+        console.error("Error verifying token:", error);
         return false;
     }
 }

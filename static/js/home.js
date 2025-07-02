@@ -1,8 +1,7 @@
-async function verificarToken() {
+async function verifyToken() {
     const token = localStorage.getItem("access_token");
-    
-    if (token != null) {
 
+    if (token != null) {
         try {
             const response = await fetch("/api/validtoken/", {
                 method: "GET",
@@ -10,18 +9,17 @@ async function verificarToken() {
                     "Authorization": "Bearer " + token
                 }
             });
-    
+
             if (response.ok) {
-                // Valid Token
+                // Valid token
                 document.getElementById('login').remove();
                 document.getElementById('register').remove();
             }
-    
+
         } catch (error) {
-            console.error("Error verificando el token:", error);
-            
+            console.error("Error verifying token:", error);
         }
     }
-
 }
-document.addEventListener("DOMContentLoaded", verificarToken);
+
+document.addEventListener("DOMContentLoaded", verifyToken);

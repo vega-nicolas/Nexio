@@ -11,19 +11,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         if (data.username.length > 30) {
-            showMessage('El nombre de usuario no puede exceder 30 caracteres', 'error');
-            alert('Error: El nombre de usuario no puede exceder 30 caracteres');
+            showMessage('Username cannot exceed 30 characters', 'error');
+            alert('Error: Username cannot exceed 30 characters');
             return;
         }
         if (data.password.length < 12) {
-            showMessage('La contraseña debe tener al menos 8 caracteres', 'error');
-            alert('Error: La contraseña debe tener al menos 8 caracteres');
+            showMessage('Password must be at least 12 characters long', 'error');
+            alert('Error: Password must be at least 12 characters');
             return;
         }
 
-        if (document.querySelector('input[name="password"]').value !== document.querySelector('input[name="confirmPassword"]').value){
-            showMessage('Las contraseñas deben ser idénticas', 'error');
-            alert("Las contraseñas deben ser idénticas");
+        if (document.querySelector('input[name="password"]').value !== document.querySelector('input[name="confirmPassword"]').value) {
+            showMessage('Passwords must match', 'error');
+            alert("Passwords must match");
             return;
         }
 
@@ -38,23 +38,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const result = await response.json();
 
-            // Manejar códigos de estado HTTP
             if (response.status === 201) {
                 form.reset();
                 window.location.href = '/login';
             } else if (response.status === 409) {
-                showMessage(result.detail || 'El email o nombre de usuario ya está registrado.', 'error');
-                alert(`Error: ${result.detail || 'El email o nombre de usuario ya está registrado.'}`);
+                showMessage(result.detail || 'Email or username is already registered.', 'error');
+                alert(`Error: ${result.detail || 'Email or username is already registered.'}`);
             } else if (response.status === 500) {
-                showMessage(result.detail || 'Error interno del servidor. Intenta de nuevo.', 'error');
-                alert(`Error: ${result.detail || 'Error interno del servidor. Intenta de nuevo.'}`);
+                showMessage(result.detail || 'Internal server error. Please try again.', 'error');
+                alert(`Error: ${result.detail || 'Internal server error. Please try again.'}`);
             } else {
-                showMessage(result.detail || 'Error al registrarse. Intenta de nuevo.', 'error');
-                alert(`Error: ${result.detail || 'Error al registrarse. Intenta de nuevo.'}`);
+                showMessage(result.detail || 'Registration failed. Please try again.', 'error');
+                alert(`Error: ${result.detail || 'Registration failed. Please try again.'}`);
             }
         } catch (error) {
-            showMessage('Error de conexión. Verifica tu red e intenta de nuevo.', 'error');
-            alert('Error de conexión: Verifica tu red e intenta de nuevo.');
+            showMessage('Connection error. Please check your network and try again.', 'error');
+            alert('Connection error: Please check your network and try again.');
             console.error('Error:', error);
         }
     });
