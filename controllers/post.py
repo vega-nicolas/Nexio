@@ -11,7 +11,7 @@ def addPost(text: str, token: str, ) -> bool:
         return False
     elif text == "":
         return False
-    elif not posts.addPost(tokens.getUserId(token), text):
+    elif not posts.addPost(tokens.getActorId(token), text):
         return False
     else:
         return True
@@ -39,7 +39,7 @@ def getAllPosts(page: int) -> List[Post]:
     
 def deletePost(post_id: int, token: str) -> bool:
     if post_id > 0:
-        return posts.deletePost(post_id, tokens.getUserId(token))
+        return posts.deletePost(post_id, tokens.getActorId(token))
     else:
         return False
     
@@ -57,4 +57,4 @@ def editPost(edit: str, post_id: int, token: str) -> bool:
     elif not post_id > 0:
         return False
     else:
-       return posts.editPost(edit, post_id, tokens.getUserId(token))
+       return posts.editPost(edit, post_id, tokens.getActorId(token))

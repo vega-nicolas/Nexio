@@ -29,3 +29,12 @@ def getUserId(token: str) -> int:
             return id
     else:
         return False
+
+def getActorId(token: str) -> int:
+    sql = "SELECT actors.id FROM tokens JOIN users ON tokens.user_id = users.id JOIN actors ON users.id = actors.user_id WHERE tokens.token_hash = %s;"
+    if cur.execute(sql, (security.hash_token(token))):
+        id = cur.fetchone()[0]
+        if id > 0:
+            return id
+    else:
+        return False
