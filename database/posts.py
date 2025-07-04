@@ -15,7 +15,7 @@ def addPost(actor_id: int, text: str) -> bool:
         return False
     
 def getAllPosts(page: int) -> List[Post]:
-    sql = "SELECT post.id, post.actor_id, preferred_username, display_name, post.text, actors.uri, post.created_at, post.likes, post.comments, post.shares FROM post INNER JOIN actors ON post.actor_id = actors.id   ORDER BY  post.created_at ASC  LIMIT %s, 10;"
+    sql = "SELECT post.id, post.actor_id, preferred_username, display_name, post.text, actors.uri, post.created_at, post.likes, post.comments, post.shares FROM post INNER JOIN actors ON post.actor_id = actors.id ORDER BY post.created_at DESC LIMIT %s, 10;"
     cur.execute(sql, (page))
     return cur.fetchall()
 

@@ -11,7 +11,15 @@
 <body>
   {% include 'topnav.html' %}
   <div class="main-container">
-    <button id="submitPost">Add Post</button>
+    <div class="postdiv">
+      <form id="postform">
+        <label for="estado">What are you thinking?</label><br>
+        <textarea id="textpost" name="estado" placeholder="Write your status here..."></textarea><br>
+        <button id="submitPost">Submit post</button>
+      </form>
+    </div>
+    
+    <div id="allpost"></div>
   </div>
   <script src="{{ url_for('static', path='/js/home.js') }}"></script>
 </body>
